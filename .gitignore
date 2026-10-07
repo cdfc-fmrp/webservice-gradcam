@@ -1,0 +1,21 @@
+#pasta extraída do modelo
+vgg16_model/
+
+#pesos / modelos grandes
+*.tar.gz
+*.pth
+*.pt
+*.h5
+*.dcm
+
+#resultados gerados
+gradcam_resultado*
+imagem_original*
+metrics_validation*
+
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+
+.env
+*.pem
