@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Classificação de Imagens</title>
+</head>
+
+<body>
+
+    <h1>Análise de imagem</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input
+            type="file"
+            name="imagem"
+            accept=".jpg,.jpeg,.png"
+            required
+        >
+
+        <button type="submit">
+            Analisar imagem
+        </button>
+
+    </form>
+
+    {% if resultado %}
+
+        <hr>
+
+        <h2>Resultado</h2>
+
+        <p>
+            Classe prevista:
+            <strong>{{ resultado["classe"] }}</strong>
+        </p>
+
+        <p>
+            Confiança:
+            {{ "%.2f"|format(resultado["confianca"] * 100) }}%
+        </p>
+
+        {% if resultado["confianca"] >= 0.90 %}
+            <p><strong>Confiança alta</strong></p>
+        {% elif resultado["confianca"] >= 0.70 %}
+            <p><strong>Confiança moderada</strong></p>
+        {% else %}
+            <p><strong>Confiança baixa</strong></p>
+        {% endif %}
+
+        <p>
+            BENIGN:
+            {{ "%.2f"|format(resultado["prob_benign"] * 100) }}%
+        </p>
+
+        <p>
+            MALIGNANT:
+            {{ "%.2f"|format(resultado["prob_malignant"] * 100) }}%
+        </p>
+
+        <h3>Imagem original</h3>
+
+        <img
+            src="{{ url_for('static', filename=imagem_original) }}"
+            width="400"
+            alt="Imagem original"
+        >
+
+        <h3>Grad-CAM</h3>
+
+        <img
+            src="{{ url_for('static', filename=imagem_gradcam) }}"
+            width="400"
+            alt="Visualização Grad-CAM"
+        >
+
+        <p>
+            As regiões destacadas no Grad-CAM representam as áreas
+            que mais contribuíram para a decisão do modelo.
+        </p>
+
+    {% endif %}
+
+</body>
+
+</html>
