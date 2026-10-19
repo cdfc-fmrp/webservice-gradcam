@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}
+SpineVision - Resultado
+{% endblock %}
+
+{% block content %}
+
+<section class="page-card">
+
+    <h2>Resultado da análise</h2>
+
+    <div class="resultado-grid">
+
+        <div class="resultado-coluna">
+
+            <h3>Imagem original</h3>
+
+            <img
+                class="resultado-img"
+                src="{{ url_for('static', filename=imagem_original) }}"
+                alt="Imagem original"
+            >
+
+        </div>
+
+
+        <div class="resultado-coluna">
+
+            <h3>Predição</h3>
+
+            <div class="classe-resultado">
+                {{ resultado["classe"] }}
+            </div>
+
+            <p class="confianca">
+                Confiança:
+                <strong>
+                    {{ "%.2f"|format(resultado["confianca"] * 100) }}%
+                </strong>
+            </p>
+
+            <div class="probabilidades">
+
+                <p>
+                    BENIGN
+                    <strong>
+                        {{ "%.2f"|format(resultado["prob_benign"] * 100) }}%
+                    </strong>
+                </p>
+
+                <div class="barra">
+                    <div
+                        class="barra-preenchida"
+                        style="width: {{ resultado['prob_benign'] * 100 }}%">
+                    </div>
+                </div>
+
+                <p>
+                    MALIGNANT
+                    <strong>
+                        {{ "%.2f"|format(resultado["prob_malignant"] * 100) }}%
+                    </strong>
+                </p>
+
+                <div class="barra">
+                    <div
+                        class="barra-preenchida"
+                        style="width: {{ resultado['prob_malignant'] * 100 }}%">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="resultado-coluna">
+
+            <h3>V-CAM</h3>
+
+            <img
+                class="resultado-img"
+                src="{{ url_for('static', filename=imagem_gradcam) }}"
+                alt="Grad-CAM"
+            >
+
+            <p class="explicacao">
+                As regiões destacadas representam áreas que
+                mais contribuíram para a decisão do modelo.
+            </p>
+
+        </div>
+
+    </div>
+
+    <a
+        class="secondary-button"
+        href="{{ url_for('analisar') }}"
+    >
+        Nova análise
+    </a>
+
+</section>
+
+{% endblock %}

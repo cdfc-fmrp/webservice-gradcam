@@ -13,7 +13,7 @@ from pipeline import (
 
 print("2. Imports concluídos")
 
-weights_path = "/home/ec2-user/SageMaker/vgg16_model/model.pth"
+weights_path = "model.pth"
 
 print("3. Carregando modelo...")
 model = carregar_modelo(weights_path)
@@ -32,8 +32,13 @@ os.makedirs(STATIC_DIR, exist_ok=True)
 print("6. Flask criado")
 
 
-@app.route("/", methods=["GET", "POST"])
-def index():
+@app.route("/")
+def home():
+    return render_template("home.html")
+
+
+@app.route("/analisar", methods=["GET", "POST"])
+def analisar():
 
     if request.method == "POST":
 
@@ -47,22 +52,12 @@ def index():
 
         image = Image.open(arquivo).convert("RGB")
 
-        print("Imagem aberta.")
-        print("Chamando pipeline...")
-
         resultado, cam = analisar_imagem(
             image,
             model,
             device,
             gradcam
         )
-
-        print("Pipeline finalizado.")
-        print("Imagem recebida:", arquivo.filename)
-        print("Classe:", resultado["classe"])
-        print("BENIGN:", resultado["prob_benign"])
-        print("MALIGNANT:", resultado["prob_malignant"])
-        print("Grad-CAM:", cam.shape)
 
         identificador = uuid.uuid4().hex
 
@@ -89,13 +84,13 @@ def index():
         )
 
         return render_template(
-            "index.html",
+            "resultado.html",
             resultado=resultado,
             imagem_original=nome_imagem_original,
             imagem_gradcam=nome_imagem_gradcam
         )
 
-    return render_template("index.html")
+    return render_template("analisar.html")
 
 if __name__ == "__main__":
     print("7. Iniciando servidor Flask")

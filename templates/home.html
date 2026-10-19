@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+SpineVision - Início
+{% endblock %}
+
+{% block content %}
+
+<section class="page-card home-card">
+
+    <h2>
+        Bem-vindo ao <strong>SpineVision</strong>
+    </h2>
+
+    <p>
+        Faça o upload de uma imagem de ressonância magnética
+        da coluna lombar para obter a classificação do modelo
+        e uma visualização das regiões que mais contribuíram
+        para sua decisão.
+    </p>
+
+    <div class="features">
+
+        <div class="feature">
+            <h3>Classificação</h3>
+            <p>
+                Predição entre as classes BENIGN e MALIGNANT.
+            </p>
+        </div>
+
+        <div class="feature">
+            <h3>V-CAM</h3>
+            <p>
+                Visualização baseada em Grad-CAM para auxiliar
+                na interpretação da decisão do modelo.
+            </p>
+        </div>
+
+        <div class="feature">
+            <h3>Imagens médicas</h3>
+            <p>
+                Análise de imagens de RM da coluna lombar.
+            </p>
+        </div>
+
+    </div>
+
+    <a
+        class="primary-button"
+        href="{{ url_for('analisar') }}"
+    >
+        Fazer nova análise
+    </a>
+
+</section>
+
+{% endblock %}

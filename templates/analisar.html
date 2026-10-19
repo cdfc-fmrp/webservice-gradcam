@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}
+SpineVision - Nova análise
+{% endblock %}
+
+{% block content %}
+
+<section class="page-card">
+
+    <h2>Nova análise</h2>
+
+    <p>
+        Selecione uma imagem para realizar a classificação
+        e gerar a visualização V-CAM.
+    </p>
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+        class="upload-form"
+    >
+
+        <div class="upload-area">
+
+            <input
+                type="file"
+                name="imagem"
+                accept=".jpg,.jpeg,.png"
+                required
+            >
+
+            <p>
+                Formatos aceitos: JPG, JPEG e PNG
+            </p>
+
+        </div>
+
+        <button
+            class="primary-button"
+            type="submit"
+        >
+            Analisar imagem
+        </button>
+
+    </form>
+
+</section>
+
+{% endblock %}

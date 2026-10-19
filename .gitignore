@@ -19,3 +19,6 @@ __pycache__/
 
 .env
 *.pem
+imagem_teste.jpg
+static/imagem_original*
+static/gradcam_resultado*
