@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}
+SpineVision - Sobre
+{% endblock %}
+
+{% block content %}
+
+<section class="page-card">
+
+    <h2>Sobre o SpineVision</h2>
+
+    <p>
+        O SpineVision é uma aplicação web voltada à análise de imagens
+        de ressonância magnética da coluna lombar, combinando classificação
+        por inteligência artificial e técnicas de explicabilidade.
+    </p>
+
+    <div class="sobre-grid">
+
+        <div class="sobre-card">
+            <h3>Objetivo</h3>
+            <p>
+                Auxiliar na classificação de imagens entre as classes
+                BENIGN e MALIGNANT, apresentando também a confiança
+                associada à predição.
+            </p>
+        </div>
+
+        <div class="sobre-card">
+            <h3>Como funciona</h3>
+            <p>
+                O usuário envia uma imagem, o sistema realiza o
+                pré-processamento, executa a classificação e retorna
+                as probabilidades previstas pelo modelo.
+            </p>
+        </div>
+
+        <div class="sobre-card">
+            <h3>Modelo</h3>
+            <p>
+                A classificação utiliza uma arquitetura VGG16 previamente
+                treinada e adaptada para o problema de análise das imagens.
+            </p>
+        </div>
+
+        <div class="sobre-card">
+            <h3>V-CAM</h3>
+            <p>
+                A explicabilidade é baseada em Grad-CAM, permitindo
+                visualizar as regiões da imagem que mais contribuíram
+                para a decisão do modelo.
+            </p>
+        </div>
+
+        <div class="sobre-card">
+            <h3>Tecnologias</h3>
+            <p>
+                Python, PyTorch, Flask, Gunicorn, Nginx e AWS EC2 são
+                utilizados na implementação e disponibilização do serviço.
+            </p>
+        </div>
+
+        <div class="sobre-card">
+            <h3>Uso experimental</h3>
+            <p>
+                O SpineVision é uma ferramenta de caráter acadêmico e
+                experimental e não substitui avaliação ou diagnóstico
+                realizado por profissionais de saúde.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

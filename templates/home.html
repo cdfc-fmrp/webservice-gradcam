@@ -8,16 +8,42 @@ SpineVision - Início
 
 <section class="page-card home-card">
 
-    <h2>
-        Bem-vindo ao <strong>SpineVision</strong>
-    </h2>
+    <div class="hero-texto">
+
+    <span class="hero-tag">
+        Inteligência Artificial aplicada a imagens médicas
+    </span>
+
+    <h1>
+        Análise de RM da coluna lombar com
+        <span>classificação e explicabilidade</span>
+    </h1>
 
     <p>
-        Faça o upload de uma imagem de ressonância magnética
-        da coluna lombar para obter a classificação do modelo
-        e uma visualização das regiões que mais contribuíram
-        para sua decisão.
+        O SpineVision utiliza um modelo de inteligência artificial
+        para classificar imagens e gerar uma visualização Grad-CAM,
+        destacando regiões que contribuíram para a decisão do modelo.
     </p>
+
+    <div class="hero-acoes">
+
+        <a
+            class="primary-button"
+            href="{{ url_for('analisar') }}"
+        >
+            Nova análise
+        </a>
+
+        <a
+            class="secondary-button"
+            href="{{ url_for('sobre') }}"
+        >
+            Saiba mais
+        </a>
+
+    </div>
+
+</div>
 
     <div class="features">
 
@@ -44,13 +70,6 @@ SpineVision - Início
         </div>
 
     </div>
-
-    <a
-        class="primary-button"
-        href="{{ url_for('analisar') }}"
-    >
-        Fazer nova análise
-    </a>
 
 </section>
 

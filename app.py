@@ -36,6 +36,14 @@ print("6. Flask criado")
 def home():
     return render_template("home.html")
 
+@app.route("/historico")
+def historico():
+    return render_template("historico.html")
+
+
+@app.route("/sobre")
+def sobre():
+    return render_template("sobre.html")
 
 @app.route("/analisar", methods=["GET", "POST"])
 def analisar():

@@ -26,13 +26,34 @@
 
         <nav class="menu">
 
-            <a href="{{ url_for('home') }}">
+	    <a 
+		href="{{ url_for('home') }}"
+		class="{% if request.endpoint == 'home' %}active{% endif %}"
+	    >
+
                 Início
             </a>
 
-            <a href="{{ url_for('analisar') }}">
-                Nova análise
+            <a 
+		href="{{ url_for('analisar') }}"
+		class="{% if request.endpoint == 'analisar' %}active{% endif %}"
+            >
+		Nova análise
             </a>
+
+	    <a
+    		href="{{ url_for('historico') }}"
+    		class="{% if request.endpoint == 'historico' %}active{% endif %}"
+	    >
+    		Histórico
+	    </a>
+
+	    <a
+    		href="{{ url_for('sobre') }}"
+    		class="{% if request.endpoint == 'sobre' %}active{% endif %}"
+	    >
+    		Sobre
+	    </a>
 
         </nav>
 
