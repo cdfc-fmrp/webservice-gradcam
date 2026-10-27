@@ -11,6 +11,12 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='style.css') }}"
     >
+	
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
 </head>
 
 <body>
@@ -20,9 +26,73 @@
     <aside class="sidebar">
 
         <div class="brand">
-            <h1>SpineVision</h1>
-            <p>Classificação e Explicabilidade</p>
-        </div>
+
+    		<div class="brand-header">
+
+        		<div class="brand-icon spine-icon">
+
+    				<svg
+        				viewBox="0 0 24 36"
+        				xmlns="http://www.w3.org/2000/svg"
+        				aria-hidden="true"
+    				>
+        				<path
+            				    d="M8 2
+               					C8 1 9 1 12 1
+               					C15 1 16 1 16 2
+               					L15 6
+               					C14 7 10 7 9 6
+               					Z
+
+               					M7 8
+               					C8 7 10 7 12 7
+               					C14 7 16 7 17 8
+               					L16 12
+               					C15 13 9 13 8 12
+               					Z
+
+               					M6 14
+               					C7 13 10 13 12 13
+               					C14 13 17 13 18 14
+               					L17 18
+               					C16 19 8 19 7 18
+               					Z
+
+               					M7 20
+               					C8 19 10 19 12 19
+               					C14 19 16 19 17 20
+               					L16 24
+               					C15 25 9 25 8 24
+               					Z
+
+               					M8 26
+               					C9 25 10 25 12 25
+               					C14 25 15 25 16 26
+               					L15 30
+               					C14 31 10 31 9 30
+               					Z
+
+               					M9 32
+               					C10 31 11 31 12 31
+               					C13 31 14 31 15 32
+               					L14 35
+               					C13 36 11 36 10 35
+               					Z"
+            				    fill="currentColor"
+        				/>
+
+    				</svg>
+
+			</div>
+
+        		<div>
+            			<h1>SpineVision</h1>
+            			<p>Classificação e Explicabilidade</p>
+        		</div>
+
+    		</div>
+
+	</div>
 
         <nav class="menu">
 
@@ -30,29 +100,32 @@
 		href="{{ url_for('home') }}"
 		class="{% if request.endpoint == 'home' %}active{% endif %}"
 	    >
-
-                Início
+		<i class="bi bi-house-door"></i>
+                <span>Início</span>
             </a>
 
             <a 
 		href="{{ url_for('analisar') }}"
 		class="{% if request.endpoint == 'analisar' %}active{% endif %}"
             >
-		Nova análise
+		<i class="bi bi-cloud-upload"></i>
+		<span>Nova análise</span>
             </a>
 
 	    <a
     		href="{{ url_for('historico') }}"
     		class="{% if request.endpoint == 'historico' %}active{% endif %}"
 	    >
-    		Histórico
+		<i class="bi bi-clock-history"></i>
+    		<span>Histórico</span>
 	    </a>
 
 	    <a
     		href="{{ url_for('sobre') }}"
     		class="{% if request.endpoint == 'sobre' %}active{% endif %}"
 	    >
-    		Sobre
+		<i class="bi bi-info-circle"></i>
+    		<span>Sobre</span>
 	    </a>
 
         </nav>
