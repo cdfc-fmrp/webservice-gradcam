@@ -121,6 +121,14 @@
 	    </a>
 
 	    <a
+    		href="{{ url_for('modelo') }}"
+    		class="{% if request.endpoint == 'modelo' %}active{% endif %}"
+	    >
+    		<i class="bi bi-cpu"></i>
+    		<span>Modelo</span>
+	    </a>
+
+	    <a
     		href="{{ url_for('sobre') }}"
     		class="{% if request.endpoint == 'sobre' %}active{% endif %}"
 	    >

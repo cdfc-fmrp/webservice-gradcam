@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}
+SpineVision - Modelo
+{% endblock %}
+
+{% block content %}
+
+<section class="page-card">
+
+    <h2>Modelo de Inteligência Artificial</h2>
+
+    <p>
+        Informações sobre a base de dados, arquitetura e desempenho
+        do modelo utilizado pelo SpineVision.
+    </p>
+
+    <h3 class="modelo-section-title">Base de dados</h3>
+
+    <div class="modelo-grid">
+
+        <div class="modelo-card destaque">
+            <span>Total</span>
+            <strong>784</strong>
+            <p>imagens / fatias</p>
+        </div>
+
+        <div class="modelo-card">
+            <span>BENIGN</span>
+            <strong>417</strong>
+            <p>imagens</p>
+        </div>
+
+        <div class="modelo-card">
+            <span>MALIGNANT</span>
+            <strong>367</strong>
+            <p>imagens</p>
+        </div>
+
+    </div>
+
+    <div class="dataset-note">
+        Um mesmo paciente pode contribuir com múltiplas fatias.
+        Todas as imagens pertencentes ao mesmo paciente foram mantidas
+        no mesmo conjunto durante a divisão dos dados, evitando
+        sobreposição entre treino, validação e teste.
+    </div>
+
+    <h3 class="modelo-section-title">Divisão dos dados</h3>
+
+    <div class="modelo-grid">
+
+        <div class="modelo-card">
+            <span>Treino</span>
+            <strong>627</strong>
+            <p>imagens</p>
+        </div>
+
+        <div class="modelo-card">
+            <span>Validação</span>
+            <strong>73</strong>
+            <p>imagens</p>
+        </div>
+
+        <div class="modelo-card">
+            <span>Teste</span>
+            <strong>84</strong>
+            <p>imagens</p>
+        </div>
+
+    </div>
+
+    <h3 class="modelo-section-title">Desempenho no conjunto de teste</h3>
+
+    <div class="metrics-grid">
+
+        <div class="metric-card">
+            <span>Acurácia</span>
+            <strong>83,33%</strong>
+        </div>
+
+        <div class="metric-card">
+            <span>Sensibilidade</span>
+            <strong>85,37%</strong>
+            <small>MALIGNANT</small>
+        </div>
+
+        <div class="metric-card">
+            <span>Especificidade</span>
+            <strong>81,40%</strong>
+        </div>
+
+        <div class="metric-card">
+            <span>ROC AUC</span>
+            <strong>0,94</strong>
+        </div>
+
+    </div>
+
+    <h3 class="modelo-section-title">Matriz de confusão</h3>
+
+    <div class="confusion-container">
+
+        <table class="confusion-table">
+
+            <tr>
+                <th></th>
+                <th>Predito BENIGN</th>
+                <th>Predito MALIGNANT</th>
+            </tr>
+
+            <tr>
+                <th>Real BENIGN</th>
+                <td class="correct">35</td>
+                <td class="error">8</td>
+            </tr>
+
+            <tr>
+                <th>Real MALIGNANT</th>
+                <td class="error">6</td>
+                <td class="correct">35</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <div class="dataset-note">
+        O desempenho apresentado corresponde ao conjunto de teste,
+        composto por 84 imagens: 43 BENIGN e 41 MALIGNANT.
+    </div>
+
+</section>
+
+{% endblock %}

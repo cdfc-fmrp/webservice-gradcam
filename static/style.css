@@ -351,6 +351,126 @@ body {
     line-height: 1.6;
 }
 
+/* MODELO */
+
+.modelo-section-title {
+    margin-top: 38px;
+    margin-bottom: 18px;
+    font-size: 20px;
+    color: #172b4d;
+}
+
+.modelo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.modelo-card {
+    background: #f6faff;
+    border: 1px solid #e1ebf5;
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.modelo-card span {
+    display: block;
+    color: #607085;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.modelo-card strong {
+    display: block;
+    color: #0d63bd;
+    font-size: 30px;
+}
+
+.modelo-card p {
+    margin: 5px 0 0;
+    color: #77879a;
+}
+
+.modelo-card.destaque {
+    background: #eaf3ff;
+}
+
+.dataset-note {
+    margin-top: 20px;
+    padding: 18px;
+    background: #f8fafc;
+    border-left: 4px solid #0d6efd;
+    border-radius: 8px;
+    color: #607085;
+    line-height: 1.6;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.metric-card {
+    background: #f6faff;
+    border: 1px solid #e1ebf5;
+    border-radius: 12px;
+    padding: 22px;
+    text-align: center;
+}
+
+.metric-card span {
+    display: block;
+    color: #607085;
+    margin-bottom: 10px;
+}
+
+.metric-card strong {
+    display: block;
+    font-size: 28px;
+    color: #0d63bd;
+}
+
+.metric-card small {
+    display: block;
+    margin-top: 6px;
+    color: #77879a;
+}
+
+.confusion-container {
+    overflow-x: auto;
+}
+
+.confusion-table {
+    width: 100%;
+    max-width: 700px;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.confusion-table th,
+.confusion-table td {
+    border: 1px solid #dce6f2;
+    padding: 18px;
+    text-align: center;
+}
+
+.confusion-table th {
+    background: #f4f7fb;
+}
+
+.confusion-table .correct {
+    background: #e9f7ef;
+    color: #198754;
+    font-weight: bold;
+}
+
+.confusion-table .error {
+    background: #fff0f0;
+    color: #dc3545;
+    font-weight: bold;
+}
+
 /* RESPONSIVO */
 
 @media (max-width: 900px) {
@@ -361,7 +481,9 @@ body {
 
     .features,
     .resultado-grid,
-    .sobre-grid {
+    .sobre-grid,
+    .modelo-grid,
+    .metrics-grid {
         grid-template-columns: 1fr;
     }
 

@@ -40,6 +40,9 @@ def home():
 def historico():
     return render_template("historico.html")
 
+@app.route("/modelo")
+def modelo():
+    return render_template("modelo.html")
 
 @app.route("/sobre")
 def sobre():
