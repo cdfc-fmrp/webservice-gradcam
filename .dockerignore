@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+*.ipynb
+imagem_teste.jpg
+static/imagem_original*
+static/gradcam_resultado*
