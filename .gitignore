@@ -1,24 +1,37 @@
-#pasta extraída do modelo
+# Pasta extraída do modelo
 vgg16_model/
 
-#pesos / modelos grandes
+# Pesos / modelos grandes
 *.tar.gz
+*.tar
 *.pth
 *.pt
 *.h5
-*.dcm
 
-#resultados gerados
+# Dados e imagens médicas
+*.dcm
+*.nii
+*.nii.gz
+
+# Resultados gerados
 gradcam_resultado*
 imagem_original*
 metrics_validation*
+static/imagem_original*
+static/gradcam_resultado*
 
+# Python / Jupyter
 .ipynb_checkpoints/
 __pycache__/
 *.pyc
 
+# Credenciais
 .env
 *.pem
+
+# Testes locais
 imagem_teste.jpg
-static/imagem_original*
-static/gradcam_resultado*
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
