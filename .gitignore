@@ -19,6 +19,7 @@ imagem_original*
 metrics_validation*
 static/imagem_original*
 static/gradcam_resultado*
+static/resultados/
 
 # Python / Jupyter
 .ipynb_checkpoints/
@@ -35,3 +36,5 @@ imagem_teste.jpg
 # Sistema operacional
 .DS_Store
 Thumbs.db
+
+.venv/

@@ -471,6 +471,151 @@ body {
     font-weight: bold;
 }
 
+/* NOVA ANÁLISE - MÚLTIPLAS IMAGENS */
+
+#lista-imagens {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.imagem-selecionada {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 16px 18px;
+
+    background: #f8fbff;
+    border: 1px solid #dce6f2;
+    border-radius: 10px;
+}
+
+.imagem-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.imagem-info strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #172b4d;
+}
+
+.imagem-info p {
+    margin: 0;
+    color: #607085;
+    font-size: 14px;
+
+    overflow-wrap: anywhere;
+}
+
+.classe-real {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 170px;
+}
+
+.classe-real label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #607085;
+}
+
+.classe-real select {
+    padding: 9px 12px;
+
+    border: 1px solid #cbd8e6;
+    border-radius: 7px;
+
+    background: white;
+    color: #172b4d;
+
+    font-size: 14px;
+}
+
+
+/* RESULTADOS - MÚLTIPLAS IMAGENS */
+
+.resultado-item {
+    margin-top: 32px;
+    padding-top: 28px;
+
+    border-top: 1px solid #e1e7ee;
+}
+
+.resultado-item:first-of-type {
+    border-top: none;
+    padding-top: 0;
+}
+
+.resultado-identificacao {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+
+    margin-bottom: 22px;
+    padding: 16px 18px;
+
+    background: #f6faff;
+    border: 1px solid #e1ebf5;
+    border-radius: 10px;
+
+    color: #607085;
+    font-size: 14px;
+}
+
+.resultado-identificacao strong {
+    color: #172b4d;
+}
+
+.comparacao-resultado {
+    margin-top: 22px;
+    padding: 16px;
+
+    background: #f8fafc;
+    border-radius: 10px;
+
+    text-align: center;
+}
+
+.comparacao-resultado p {
+    margin-top: 0;
+}
+
+.resultado-acerto {
+    display: inline-block;
+
+    margin-top: 6px;
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    background: #e9f7ef;
+    color: #198754;
+
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.resultado-erro {
+    display: inline-block;
+
+    margin-top: 6px;
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    background: #fff0f0;
+    color: #dc3545;
+
+    font-weight: 700;
+    font-size: 14px;
+}
+
 /* RESPONSIVO */
 
 @media (max-width: 900px) {
@@ -489,5 +634,14 @@ body {
 
     .main-content {
         padding: 20px;
+    }
+
+    .imagem-selecionada {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .resultado-identificacao {
+        grid-template-columns: 1fr;
     }
 }

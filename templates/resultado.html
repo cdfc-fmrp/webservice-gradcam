@@ -10,89 +10,197 @@ SpineVision - Resultado
 
     <h2>Resultado da análise</h2>
 
-    <div class="resultado-grid">
-
-        <div class="resultado-coluna">
-
-            <h3>Imagem original</h3>
-
-            <img
-                class="resultado-img"
-                src="{{ url_for('static', filename=imagem_original) }}"
-                alt="Imagem original"
-            >
-
-        </div>
+    <p>
+        {{ resultados|length }}
+        {% if resultados|length == 1 %}
+            imagem analisada
+        {% else %}
+            imagens analisadas
+        {% endif %}
+    </p>
 
 
-        <div class="resultado-coluna">
+    {% for item in resultados %}
 
-            <h3>Predição</h3>
+        <div class="resultado-item">
 
-            <div class="classe-resultado {{ resultado['classe']|lower }}">
-                {{ resultado["classe"] }}
-            </div>
+            <!-- Informações da imagem -->
+            <div class="resultado-identificacao">
 
-            <p class="confianca">
-                Confiança:
-                <strong>
-                    {{ "%.2f"|format(resultado["confianca"] * 100) }}%
-                </strong>
-            </p>
-
-            <div class="probabilidades">
-
-                <p>
-                    BENIGN
-                    <strong>
-                        {{ "%.2f"|format(resultado["prob_benign"] * 100) }}%
-                    </strong>
-                </p>
-
-                <div class="barra">
-                    <div
-                        class="barra-preenchida"
-                        style="width: {{ resultado['prob_benign'] * 100 }}%">
-                    </div>
+                <div>
+                    <strong>Arquivo:</strong>
+                    {{ item["nome_arquivo"] }}
                 </div>
 
-                <p>
-                    MALIGNANT
-                    <strong>
-                        {{ "%.2f"|format(resultado["prob_malignant"] * 100) }}%
-                    </strong>
-                </p>
+                <div>
+                    <strong>ID do caso:</strong>
+                    {{ item["paciente"] }}
+                </div>
 
-                <div class="barra">
-                    <div
-                        class="barra-preenchida"
-                        style="width: {{ resultado['prob_malignant'] * 100 }}%">
-                    </div>
+                <div>
+                    <strong>Vértebra:</strong>
+                    {{ item["vertebra"] }}
                 </div>
 
             </div>
 
+
+            <div class="resultado-grid">
+
+                <!-- IMAGEM ORIGINAL -->
+                <div class="resultado-coluna">
+
+                    <h3>Imagem original</h3>
+
+                    <img
+                        class="resultado-img"
+                        src="{{ url_for('static', filename=item['imagem_original']) }}"
+                        alt="Imagem original"
+                    >
+
+                </div>
+
+
+                <!-- PREDIÇÃO -->
+                <div class="resultado-coluna">
+
+                    <h3>Predição</h3>
+
+                    <div
+                        class="classe-resultado {{ item['classe_prevista']|lower }}"
+                    >
+                        {{ item["classe_prevista"] }}
+                    </div>
+
+
+                    <p class="confianca">
+
+                        Confiança:
+
+                        <strong>
+                            {{
+                                "%.2f"|format(
+                                    item["resultado"]["confianca"] * 100
+                                )
+                            }}%
+                        </strong>
+
+                    </p>
+
+
+                    <!-- CLASSE REAL -->
+                    <div class="comparacao-resultado">
+
+                        <p>
+                            Classe real:
+                            <strong>
+                                {% if item["classe_real"] %}
+                                    {{ item["classe_real"] }}
+                                {% else %}
+                                    Não informada
+                                {% endif %}
+                            </strong>
+                        </p>
+
+
+                        {% if item["acertou"] is not none %}
+
+                            {% if item["acertou"] %}
+
+                                <div class="resultado-acerto">
+                                    ✓ ACERTO
+                                </div>
+
+                            {% else %}
+
+                                <div class="resultado-erro">
+                                    ✕ ERRO
+                                </div>
+
+                            {% endif %}
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- PROBABILIDADES -->
+                    <div class="probabilidades">
+
+                        <p>
+                            BENIGN
+                            <strong>
+                                {{
+                                    "%.2f"|format(
+                                        item["resultado"]["prob_benign"] * 100
+                                    )
+                                }}%
+                            </strong>
+                        </p>
+
+                        <div class="barra">
+                            <div
+                                class="barra-preenchida"
+                                style="
+                                    width:
+                                    {{ item['resultado']['prob_benign'] * 100 }}%
+                                "
+                            >
+                            </div>
+                        </div>
+
+
+                        <p>
+                            MALIGNANT
+                            <strong>
+                                {{
+                                    "%.2f"|format(
+                                        item["resultado"]["prob_malignant"] * 100
+                                    )
+                                }}%
+                            </strong>
+                        </p>
+
+                        <div class="barra">
+                            <div
+                                class="barra-preenchida"
+                                style="
+                                    width:
+                                    {{ item['resultado']['prob_malignant'] * 100 }}%
+                                "
+                            >
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- GRAD-CAM -->
+                <div class="resultado-coluna">
+
+                    <h3>Grad-CAM</h3>
+
+                    <img
+                        class="resultado-img"
+                        src="{{ url_for('static', filename=item['imagem_gradcam']) }}"
+                        alt="Grad-CAM"
+                    >
+
+                    <p class="explicacao">
+                        As regiões destacadas representam áreas que
+                        mais contribuíram para a decisão do modelo.
+                    </p>
+
+                </div>
+
+            </div>
+
         </div>
 
+    {% endfor %}
 
-        <div class="resultado-coluna">
-
-            <h3>V-CAM</h3>
-
-            <img
-                class="resultado-img"
-                src="{{ url_for('static', filename=imagem_gradcam) }}"
-                alt="Grad-CAM"
-            >
-
-            <p class="explicacao">
-                As regiões destacadas representam áreas que
-                mais contribuíram para a decisão do modelo.
-            </p>
-
-        </div>
-
-    </div>
 
     <a
         class="secondary-button"

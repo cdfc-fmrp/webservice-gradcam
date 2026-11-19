@@ -11,8 +11,8 @@ SpineVision - Nova análise
     <h2>Nova análise</h2>
 
     <p>
-        Selecione uma imagem para realizar a classificação
-        e gerar a visualização V-CAM.
+        Selecione uma ou mais imagens para realizar a classificação
+        e gerar a visualização Grad-CAM.
     </p>
 
     <form
@@ -25,8 +25,10 @@ SpineVision - Nova análise
 
             <input
                 type="file"
-                name="imagem"
+                id="imagens"
+                name="imagens"
                 accept=".jpg,.jpeg,.png"
+                multiple
                 required
             >
 
@@ -36,15 +38,94 @@ SpineVision - Nova análise
 
         </div>
 
+
+        <!--
+            Esta área será preenchida automaticamente
+            quando o usuário selecionar as imagens.
+        -->
+        <div id="lista-imagens"></div>
+
+
         <button
             class="primary-button"
             type="submit"
         >
-            Analisar imagem
+            Analisar imagens
         </button>
 
     </form>
 
 </section>
+
+
+<script>
+
+    const inputImagens = document.getElementById("imagens");
+    const listaImagens = document.getElementById("lista-imagens");
+
+
+    inputImagens.addEventListener("change", function () {
+
+        // Limpa a lista anterior
+        listaImagens.innerHTML = "";
+
+
+        // Percorre todos os arquivos selecionados
+        Array.from(this.files).forEach((arquivo, indice) => {
+
+            const item = document.createElement("div");
+
+            item.classList.add("imagem-selecionada");
+
+
+            item.innerHTML = `
+                <div class="imagem-info">
+
+                    <strong>
+                        Imagem ${indice + 1}
+                    </strong>
+
+                    <p>
+                        ${arquivo.name}
+                    </p>
+
+                </div>
+
+                <div class="classe-real">
+
+                    <label>
+                        Classe real:
+                    </label>
+
+                    <select
+                        name="classe_real"
+                        required
+                    >
+
+                        <option value="">
+                            Selecione
+                        </option>
+
+                        <option value="BENIGN">
+                            BENIGN
+                        </option>
+
+                        <option value="MALIGNANT">
+                            MALIGNANT
+                        </option>
+
+                    </select>
+
+                </div>
+            `;
+
+
+            listaImagens.appendChild(item);
+
+        });
+
+    });
+
+</script>
 
 {% endblock %}
