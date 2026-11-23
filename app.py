@@ -125,7 +125,7 @@ def analisar():
             )
 
             # Mesmo pipeline que já funcionava
-            resultado, cam = analisar_imagem(
+            resultado, cam, image_processada = analisar_imagem(
                 image,
                 model,
                 device,
@@ -151,7 +151,7 @@ def analisar():
             else:
                 acertou = None
 
-            # Identificador único para não sobrescrever imagens
+            # Numeração das imagens dentro da análise
             numero_imagem = indice + 1
 
             nome_imagem_original = (
@@ -175,7 +175,7 @@ def analisar():
             image.save(caminho_imagem_original)
 
             gerar_gradcam_visual(
-                image,
+                image_processada,
                 cam,
                 resultado["classe"],
                 caminho_imagem_gradcam

@@ -13,10 +13,11 @@ from PIL import Image
 
 labels = ["BENIGN", "MALIGNANT"]
 
-
-transform = transforms.Compose([
+transform_visual = transforms.Compose([
     transforms.Resize(256),
-    transforms.CenterCrop(224),
+    transforms.CenterCrop(224)
+])
+transform_modelo = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize(
         mean=[0.485, 0.456, 0.406],
@@ -24,15 +25,17 @@ transform = transforms.Compose([
     )
 ])
 
-
 def preprocessar_imagem(image, device):
+
+    image_processada = transform_visual(image)
+
     input_tensor = (
-        transform(image)
+        transform_modelo(image_processada)
         .unsqueeze(0)
         .to(device)
     )
 
-    return input_tensor
+    return input_tensor, image_processada
 
 
 def classificar_imagem(model, input_tensor):
@@ -149,7 +152,7 @@ def inicializar_modelo(model):
 
 def analisar_imagem(image, model, device, gradcam):
 
-    input_tensor = preprocessar_imagem(
+    input_tensor, image_processada = preprocessar_imagem(
         image,
         device
     )
@@ -164,7 +167,7 @@ def analisar_imagem(image, model, device, gradcam):
         class_idx=resultado["class_idx"]
     )
 
-    return resultado, cam
+    return resultado, cam, image_processada
 
 def gerar_gradcam_visual(image, cam, classe, caminho_saida):
     cam_resized = Image.fromarray(
