@@ -130,6 +130,20 @@ SpineVision - Modelo
         composto por 84 imagens: 43 BENIGN e 41 MALIGNANT.
     </div>
 
+    <section class="modelo-dashboard">
+
+        <h3 class="modelo-section-title">
+            Base utilizada no modelo
+        </h3>
+
+        <iframe
+            src="{{ url_for('dashboard_base') }}"
+            class="dashboard-frame"
+            title="Dashboard da base de dados"
+        ></iframe>
+
+    </section>
+
 </section>
 
 {% endblock %}

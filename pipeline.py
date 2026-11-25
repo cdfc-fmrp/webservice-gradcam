@@ -56,6 +56,98 @@ def classificar_imagem(model, input_tensor):
         "prob_malignant": probabilities[0, 1].item()
     }
 
+def gerar_gradiente_saliencia(
+    model,
+    input_tensor,
+    class_idx,
+    corte_percentil=99
+):
+    # Cria uma cópia porque precisamos calcular
+    # o gradiente em relação à entrada
+    x = (
+        input_tensor
+        .clone()
+        .detach()
+        .requires_grad_(True)
+    )
+
+    model.zero_grad(set_to_none=True)
+
+    output = model(x)
+
+    # Logit correspondente à classe prevista
+    score = output[:, class_idx]
+
+    score.backward()
+
+    # Gradiente absoluto máximo entre os 3 canais
+    mapa = (
+        x.grad
+        .abs()
+        .amax(dim=1)
+        .squeeze(0)
+        .detach()
+        .cpu()
+        .numpy()
+    )
+
+    # Limita valores extremos
+    limite = np.percentile(
+        mapa,
+        corte_percentil
+    )
+
+    mapa = np.minimum(
+        mapa,
+        limite
+    )
+
+    # Normalização 0–1
+    mapa = mapa - mapa.min()
+
+    if mapa.max() > 0:
+        mapa = mapa / mapa.max()
+
+    return mapa.astype(np.float32)
+
+def gerar_gradiente_visual(
+    image,
+    mapa,
+    classe,
+    caminho_saida
+):
+    imagem_np = np.array(image)
+
+    intensidade = imagem_np.mean(axis=2)
+
+    mascara_vertebra = intensidade > 10
+
+    plt.figure(figsize=(7, 7))
+
+    plt.imshow(image)
+
+    plt.imshow(
+        mapa,
+        cmap="jet",
+        alpha=0.45
+    )
+
+    plt.contour(
+        mascara_vertebra.astype(float),
+        levels=[0.5],
+        colors="white",
+        linewidths=1.5
+    )
+
+    plt.axis("off")
+
+    plt.savefig(
+        caminho_saida,
+        bbox_inches="tight",
+        dpi=200
+    )
+
+    plt.close()
 
 class GradCAM:
 
@@ -82,7 +174,7 @@ class GradCAM:
 
     def __call__(self, x, class_idx=None):
 
-        self.model.zero_grad()
+        self.model.zero_grad(set_to_none=True)
 
         output = self.model(x)
 
@@ -151,7 +243,6 @@ def inicializar_modelo(model):
 
 
 def analisar_imagem(image, model, device, gradcam):
-
     input_tensor, image_processada = preprocessar_imagem(
         image,
         device
@@ -167,7 +258,18 @@ def analisar_imagem(image, model, device, gradcam):
         class_idx=resultado["class_idx"]
     )
 
-    return resultado, cam, image_processada
+    saliencia = gerar_gradiente_saliencia(
+        model,
+        input_tensor,
+        resultado["class_idx"]
+    )
+
+    return (
+        resultado,
+        cam,
+        saliencia,
+        image_processada
+    )
 
 def gerar_gradcam_visual(image, cam, classe, caminho_saida):
     cam_resized = Image.fromarray(
@@ -179,6 +281,12 @@ def gerar_gradcam_visual(image, cam, classe, caminho_saida):
 
     cam_resized = np.array(cam_resized) / 255.0
 
+    imagem_np = np.array(image)
+
+    intensidade = imagem_np.mean(axis=2)
+
+    mascara_vertebra = intensidade > 10
+
     plt.figure(figsize=(7, 7))
 
     plt.imshow(image)
@@ -188,8 +296,14 @@ def gerar_gradcam_visual(image, cam, classe, caminho_saida):
         alpha=0.45
     )
 
+    plt.contour(
+        mascara_vertebra.astype(float),
+        levels=[0.5],
+        colors="white",
+        linewidths=1.5
+    )
+
     plt.axis("off")
-    plt.title(f"Grad-CAM - {classe}")
 
     plt.savefig(
         caminho_saida,

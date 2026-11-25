@@ -645,3 +645,41 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+.resultado-grid-xai {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
+    align-items: start;
+}
+
+.predicao-box {
+    margin-top: 32px;
+    padding: 24px;
+    background: #f8fafc;
+    border: 1px solid #dce6f2;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.predicao-box .probabilidades {
+    max-width: 600px;
+    margin: 20px auto 0;
+}
+
+@media (max-width: 900px) {
+    .resultado-grid-xai {
+        grid-template-columns: 1fr;
+    }
+}
+
+.modelo-dashboard {
+    margin-top: 40px;
+}
+
+.dashboard-frame {
+    width: 100%;
+    height: 1800px;
+    border: none;
+    border-radius: 12px;
+    background: #f3f5f8;
+}

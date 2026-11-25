@@ -1,0 +1,94 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8"><title>Vértebras lombares — gráficos BENIGN × MALIGNANT</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f3f5f8;--card:#fff;--text:#1b2433;--muted:#6b7a8f;--grid:#e3e7ed;--navy:#0b2545;--blue:#1f5fa8;--ben:#2e9e5b;--mal:#d64545;--f:#4a90d9;--m:#0b2545;--line:#d5dae1;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10151d;--card:#1a212c;--text:#e6ebf2;--muted:#93a1b5;--grid:#2a3442;--navy:#16314f;--blue:#4a90d9;--m:#9cc3f0;--line:#2f3a4a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#10151d;--card:#1a212c;--text:#e6ebf2;--muted:#93a1b5;--grid:#2a3442;--navy:#16314f;--blue:#4a90d9;--m:#9cc3f0;--line:#2f3a4a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+header{background:var(--navy);color:#fff;padding:18px 24px}h1{margin:0;font-size:22px}header p{margin:4px 0 0;font-size:12px;color:#c9d6e8}
+main{max-width:1200px;margin:0 auto;padding:16px}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:6px}
+label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.04em}
+select{width:100%;margin-top:4px;padding:9px;font:700 14px Arial;color:var(--text);background:var(--card);border:2px solid var(--blue);border-radius:6px}
+.note{font-size:11px;color:var(--muted);font-style:italic;margin:6px 0 14px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:16px}
+.k{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px;text-align:center}
+.k small{display:block;font-size:10px;font-weight:700;color:var(--muted)}.k b{display:block;font-size:26px;margin-top:4px}
+h2{background:var(--blue);color:#fff;font-size:13px;padding:8px 12px;border-radius:6px;margin:18px 0 4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px;margin-top:10px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px}.w{grid-column:span 2}
+@media(max-width:700px){.w{grid-column:span 1}}
+.c h3{margin:0 0 6px;font-size:13px;text-align:center;color:var(--text)}.box{position:relative;height:260px}
+</style></head><body>
+<header><h1>Vértebras lombares — Classificação BENIGN × MALIGNANT</h1><p>Gráficos da base · Fontes: Patients.xlsx (pacientes) e CSV do modelo (imagens/fatias)</p></header>
+<main>
+<div class="filters">
+<div><label for="fs">SEXO</label><select id="fs"><option>Todos</option><option>Feminino</option><option>Masculino</option></select></div>
+<div><label for="fc">CLASSE</label><select id="fc"><option>Todas</option><option>BENIGN</option><option>MALIGNANT</option></select></div>
+<div><label for="fv">VÉRTEBRA</label><select id="fv"><option>Todas</option><option>L1</option><option>L2</option><option>L3</option><option>L4</option><option>L5</option></select></div>
+<div><label for="fp">SPLIT DAS IMAGENS</label><select id="fp"><option>Todos</option><option>TRAIN</option><option>VALIDATION</option><option>TEST</option></select></div></div>
+<p class="note">Sexo, Classe e Vértebra filtram pacientes e imagens; Split filtra apenas as imagens. Pacientes e imagens são unidades diferentes: um paciente/vértebra tem várias imagens.</p>
+<div class="kpis" id="kpis"></div>
+<h2>PACIENTES · unidade: paciente · fonte: Patients.xlsx</h2>
+<div class="grid">
+<div class="c"><h3>Pacientes por sexo — nº de pacientes</h3><div class="box"><canvas id="g1"></canvas></div></div>
+<div class="c"><h3>Pacientes por classe — pacientes únicos</h3><div class="box"><canvas id="g2"></canvas></div></div>
+<div class="c"><h3>Vértebras segmentadas por paciente — nº de pacientes</h3><div class="box"><canvas id="g3"></canvas></div></div>
+<div class="c w"><h3>Faixa etária por sexo — nº de pacientes</h3><div class="box"><canvas id="g4"></canvas></div></div>
+<div class="c"><h3>Classe por faixa etária — nº de pacientes</h3><div class="box"><canvas id="g5"></canvas></div></div>
+<div class="c w"><h3>Vértebras segmentadas por classe — pacientes (1 paciente conta em cada nível)</h3><div class="box"><canvas id="g6"></canvas></div></div></div>
+<h2>IMAGENS · unidade: imagem/fatia · fonte: CSV do modelo</h2>
+<div class="grid">
+<div class="c"><h3>Imagens por classe — nº de imagens</h3><div class="box"><canvas id="g7"></canvas></div></div>
+<div class="c"><h3>Imagens por split — nº de imagens (ignora filtro de Split)</h3><div class="box"><canvas id="g8"></canvas></div></div>
+<div class="c"><h3>Pacientes por split — nº de pacientes</h3><div class="box"><canvas id="g9"></canvas></div></div>
+<div class="c w"><h3>Imagens por nível vertebral e classe — nº de imagens</h3><div class="box"><canvas id="g10"></canvas></div></div></div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+const D={"P":[["P1",67,"F","BENIGN","L1","TRAIN"],["P2",61,"F","BENIGN","L1/L3/L5","TRAIN"],["P3",65,"M","BENIGN","L1","TRAIN"],["P4",84,"M","BENIGN","L3","TRAIN"],["P5",78,"F","BENIGN","L1/L4","TRAIN"],["P6",73,"M","BENIGN","L1/L3/L5","VALIDATION"],["P8",75,"F","BENIGN","L3/L4/L5","TEST"],["P9",60,"F","BENIGN","L2","TEST"],["P10",62,"F","BENIGN","L1/L2/L3/L4/L5","TRAIN"],["P14",53,"F","BENIGN","L1/L3","TRAIN"],["P16",76,"F","BENIGN","L1/L2","TRAIN"],["P18",67,"F","BENIGN","L4","TRAIN"],["P19",76,"M","BENIGN","L1","TRAIN"],["P20",69,"F","BENIGN","L1","TRAIN"],["P21",55,"F","BENIGN","L2","TRAIN"],["P22",81,"M","BENIGN","L2","TRAIN"],["P24",68,"M","BENIGN","L2/L3/L5","TRAIN"],["P27",66,"F","BENIGN","L4","TRAIN"],["P29",74,"M","BENIGN","L1","TRAIN"],["P30",45,"M","BENIGN","L1","TRAIN"],["P31",58,"F","BENIGN","L1","TRAIN"],["P32",63,"F","BENIGN","L1/L4","TRAIN"],["P33",59,"F","BENIGN","L1","TRAIN"],["P34",88,"F","BENIGN","L1","TRAIN"],["P35",84,"F","BENIGN","L1/L2/L3/L4/L5","TRAIN"],["P53",67,"F","BENIGN","L1","TRAIN"],["P54",57,"F","BENIGN","L1","TRAIN"],["P55",87,"F","BENIGN","L2/L3","TRAIN"],["P56",67,"M","BENIGN","L1/L2","TRAIN"],["P57",78,"F","BENIGN","L1","TRAIN"],["P59",73,"F","BENIGN","L4","TRAIN"],["P60",57,"F","BENIGN","L2","TRAIN"],["P62",58,"M","BENIGN","L4","TRAIN"],["P63",60,"F","BENIGN","L4","TRAIN"],["P64",65,"F","BENIGN","L2","TRAIN"],["P65",74,"F","BENIGN","L1","TRAIN"],["P66",76,"F","BENIGN","L4","TRAIN"],["P67",84,"F","BENIGN","L3","TRAIN"],["P68",75,"F","BENIGN","L1","TRAIN"],["P69",66,"M","BENIGN","L3","VALIDATION"],["P70",60,"F","BENIGN","L3","VALIDATION"],["P71",53,"F","BENIGN","L2","VALIDATION"],["P82",64,"F","BENIGN","L2","TEST"],["P83",74,"F","BENIGN","L3","VALIDATION"],["P84",68,"F","BENIGN","L3","TEST"],["P85",70,"F","BENIGN","L1","TEST"],["P86",70,"F","BENIGN","L2","TEST"],["P7",73,"F","MALIGNANT","L1","VALIDATION"],["P11",33,"F","MALIGNANT","L2","TRAIN"],["P12",78,"M","MALIGNANT","L2","TRAIN"],["P13",59,"M","MALIGNANT","L2","TRAIN"],["P15",57,"M","MALIGNANT","L2/L4","TRAIN"],["P17",51,"F","MALIGNANT","L3","TRAIN"],["P23",65,"F","MALIGNANT","L1/L2","TRAIN"],["P25",67,"F","MALIGNANT","L1","TRAIN"],["P26",59,"M","MALIGNANT","L1/L2/L3/L4","TRAIN"],["P28",52,"F","MALIGNANT","L4","TRAIN"],["P36",79,"M","MALIGNANT","L2","TRAIN"],["P37",61,"F","MALIGNANT","L4","TRAIN"],["P38",65,"M","MALIGNANT","L3/L4/L5","TRAIN"],["P39",60,"F","MALIGNANT","L5","TRAIN"],["P40",71,"M","MALIGNANT","L4","TRAIN"],["P41",27,"M","MALIGNANT","L4/L5","TRAIN"],["P42",55,"M","MALIGNANT","L1/L2/L3/L4/L5","TRAIN"],["P43",59,"F","MALIGNANT","L3/L4","TRAIN"],["P44",64,"M","MALIGNANT","L3","TRAIN"],["P45",61,"M","MALIGNANT","L1/L3/L5","TRAIN"],["P46",55,"F","MALIGNANT","L4","TRAIN"],["P47",51,"M","MALIGNANT","L3","TRAIN"],["P48",62,"M","MALIGNANT","L3","TRAIN"],["P49",53,"M","MALIGNANT","L1/L5","TRAIN"],["P50",54,"M","MALIGNANT","L5","TRAIN"],["P51",56,"F","MALIGNANT","L2/L5","TRAIN"],["P52",36,"F","MALIGNANT","L4","TRAIN"],["P58",41,"M","MALIGNANT","L3","TRAIN"],["P61",57,"F","MALIGNANT","L1","TRAIN"],["P72",63,"F","MALIGNANT","L1","TRAIN"],["P73",77,"M","MALIGNANT","L4","TRAIN"],["P74",53,"F","MALIGNANT","L2","TRAIN"],["P75",72,"M","MALIGNANT","L1","TRAIN"],["P76",49,"M","MALIGNANT","L5","VALIDATION"],["P77",84,"F","MALIGNANT","L4","VALIDATION"],["P78",45,"M","MALIGNANT","L2","VALIDATION"],["P79",69,"F","MALIGNANT","L4","VALIDATION"],["P80",74,"M","MALIGNANT","L5","TEST"],["P81",59,"F","MALIGNANT","L1","TEST"],["P87",72,"F","MALIGNANT","L5","TEST"],["P88",68,"M","MALIGNANT","L4","TEST"],["P89",77,"M","MALIGNANT","L5","TEST"],["P90",55,"M","MALIGNANT","L4","TEST"],["P91",58,"M","MALIGNANT","L4","TEST"]],"I":[["P1","L1",5],["P10","L1",9],["P10","L2",8],["P10","L3",9],["P10","L4",9],["P10","L5",9],["P11","L2",5],["P12","L2",6],["P13","L2",7],["P14","L1",6],["P14","L3",7],["P15","L2",5],["P15","L4",6],["P16","L1",4],["P16","L2",5],["P17","L3",8],["P18","L4",5],["P19","L1",7],["P2","L1",6],["P2","L3",6],["P2","L5",6],["P20","L1",5],["P21","L2",6],["P22","L2",7],["P23","L1",5],["P23","L2",5],["P24","L2",7],["P24","L3",8],["P24","L5",8],["P25","L1",5],["P26","L1",6],["P26","L2",6],["P26","L3",7],["P26","L4",7],["P27","L4",7],["P28","L4",6],["P29","L1",5],["P3","L1",6],["P30","L1",5],["P31","L1",6],["P32","L1",6],["P32","L4",7],["P33","L1",5],["P34","L1",6],["P35","L1",6],["P35","L2",6],["P35","L3",6],["P35","L4",6],["P35","L5",6],["P36","L2",6],["P37","L4",6],["P38","L3",6],["P38","L4",7],["P38","L5",7],["P39","L5",6],["P4","L3",5],["P40","L4",7],["P41","L4",6],["P41","L5",6],["P42","L1",7],["P42","L2",6],["P42","L3",6],["P42","L4",6],["P42","L5",7],["P43","L3",6],["P43","L4",7],["P44","L3",7],["P45","L1",5],["P45","L3",6],["P45","L5",6],["P46","L4",6],["P47","L3",5],["P48","L3",5],["P49","L1",6],["P49","L5",7],["P5","L1",5],["P5","L4",5],["P50","L5",6],["P51","L2",6],["P51","L5",7],["P52","L4",5],["P53","L1",5],["P54","L1",6],["P55","L2",5],["P55","L3",5],["P56","L1",6],["P56","L2",6],["P57","L1",6],["P58","L3",4],["P59","L4",6],["P6","L1",5],["P6","L3",5],["P6","L5",6],["P60","L2",8],["P61","L1",5],["P62","L4",6],["P63","L4",5],["P64","L2",5],["P65","L1",5],["P66","L4",7],["P67","L3",8],["P68","L1",5],["P69","L3",7],["P7","L1",5],["P70","L3",5],["P71","L2",5],["P72","L1",4],["P73","L4",5],["P74","L2",6],["P75","L1",6],["P76","L5",8],["P77","L4",7],["P78","L2",7],["P79","L4",6],["P8","L3",6],["P8","L4",6],["P8","L5",6],["P80","L5",7],["P81","L1",4],["P82","L2",4],["P83","L3",7],["P84","L3",6],["P85","L1",5],["P86","L2",4],["P87","L5",6],["P88","L4",7],["P89","L5",6],["P9","L2",6],["P90","L4",5],["P91","L4",6]]};
+const LV=['L1','L2','L3','L4','L5'],SPL=['TRAIN','VALIDATION','TEST'],AGL=['< 40','40–49','50–59','60–69','70–79','80+'],AGB=[40,50,60,70,80];
+const PT=D.P.map(r=>({id:r[0],age:r[1],sex:r[2]=='F'?'Feminino':'Masculino',cls:r[3],vs:r[4].split('/'),split:r[5]}));
+const byId=Object.fromEntries(PT.map(p=>[p.id,p]));
+const IM=D.I.map(r=>({p:byId[r[0]],v:r[1],n:r[2]}));
+const $=id=>document.getElementById(id),css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const sum=a=>a.reduce((x,y)=>x+y,0),cnt=(a,fn)=>a.filter(fn).length,ageBin=a=>AGB.filter(b=>a>=b).length;
+const fmt=(x,d)=>x==null?'–':x.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+const vals={id:'vals',afterDatasetsDraw(ch){const c=ch.ctx,st=ch.options.scales&&ch.options.scales.x&&ch.options.scales.x.stacked;c.save();c.font='bold 11px Arial';c.textAlign='center';
+ch.data.datasets.forEach((ds,i)=>{ch.getDatasetMeta(i).data.forEach((el,j)=>{const v=ds.data[j];if(!v)return;
+if(ch.config.type=='doughnut'){const t=sum(ds.data);c.fillStyle='#fff';const q=el.tooltipPosition();c.fillText(v+' · '+Math.round(v/t*100)+'%',q.x,q.y+4)}
+else if(st){c.fillStyle='#fff';c.fillText(v,el.x,(el.y+el.base)/2+4)}else{c.fillStyle=css('--text');c.fillText(v,el.x,el.y-5)}})});c.restore()}};
+const charts={};
+function mk(id,type,stacked){const o={responsive:true,maintainAspectRatio:false,animation:{duration:250},plugins:{legend:{position:'bottom',labels:{boxWidth:12}}}};
+if(type=='bar')o.scales={x:{stacked:!!stacked,grid:{display:false}},y:{stacked:!!stacked,beginAtZero:true,ticks:{precision:0}}};else o.cutout='55%';
+charts[id]=new Chart($(id),{type,data:{labels:[],datasets:[]},options:o,plugins:[vals]})}
+[['g1','doughnut'],['g2','bar'],['g3','bar'],['g4','bar'],['g5','bar',1],['g6','bar'],['g7','bar'],['g8','bar'],['g9','bar'],['g10','bar']].forEach(a=>mk(...a));
+function set(id,labels,sets,legend){const c=charts[id];c.data.labels=labels;c.data.datasets=sets.map(s=>Object.assign({borderWidth:0,borderRadius:3},s));c.options.plugins.legend.display=!!legend;c.update()}
+function render(){
+const sx=$('fs').value,cl=$('fc').value,vt=$('fv').value,sp=$('fp').value;
+const ok=(p)=>(sx=='Todos'||p.sex==sx)&&(cl=='Todas'||p.cls==cl);
+const pf=PT.filter(p=>ok(p)&&(vt=='Todas'||p.vs.includes(vt)));
+const ib=IM.filter(r=>ok(r.p)&&(vt=='Todas'||r.v==vt)),im=ib.filter(r=>sp=='Todos'||r.p.split==sp);
+const nI=sum(im.map(r=>r.n)),nPI=new Set(im.map(r=>r.p.id)).size,ages=pf.map(p=>p.age);
+const K=[['PACIENTES',pf.length],['IMAGENS',nI],['IDADE MÉDIA',pf.length?fmt(sum(ages)/pf.length,1):'–'],['IDADE MÍNIMA',pf.length?Math.min(...ages):'–'],['IDADE MÁXIMA',pf.length?Math.max(...ages):'–'],['VÉRTEBRAS / PACIENTE',pf.length?fmt(sum(pf.map(p=>p.vs.length))/pf.length,2):'–'],
+['FEMININO',cnt(pf,p=>p.sex=='Feminino')],['MASCULINO',cnt(pf,p=>p.sex=='Masculino')],['BENIGN',cnt(pf,p=>p.cls=='BENIGN'),'--ben'],['MALIGNANT',cnt(pf,p=>p.cls=='MALIGNANT'),'--mal'],['PACIENTES > 1 VÉRTEBRA',cnt(pf,p=>p.vs.length>1)],['IMAGENS / PACIENTE',nPI?fmt(nI/nPI,1):'–']];
+$('kpis').innerHTML=K.map(k=>`<div class="k"><small>${k[0]}</small><b${k[2]?` style="color:var(${k[2]})"`:''}>${k[1]}</b></div>`).join('');
+const F=css('--f'),M=css('--m'),B=css('--ben'),R=css('--mal'),BL=css('--blue');
+const cs=['BENIGN','MALIGNANT'],cc=[B,R];
+set('g1',['Feminino','Masculino'],[{data:['Feminino','Masculino'].map(s=>cnt(pf,p=>p.sex==s)),backgroundColor:[F,M]}],1);
+set('g2',cs,[{data:cs.map(c=>cnt(pf,p=>p.cls==c)),backgroundColor:cc}]);
+set('g3',['1','2','3','4','5'],[{data:[1,2,3,4,5].map(n=>cnt(pf,p=>p.vs.length==n)),backgroundColor:BL}]);
+const ab=(fn)=>AGL.map((_,i)=>cnt(pf,p=>ageBin(p.age)==i&&fn(p)));
+set('g4',AGL,[{label:'Feminino',data:ab(p=>p.sex=='Feminino'),backgroundColor:F},{label:'Masculino',data:ab(p=>p.sex=='Masculino'),backgroundColor:M}],1);
+set('g5',AGL,cs.map((c,i)=>({label:c,data:ab(p=>p.cls==c),backgroundColor:cc[i]})),1);
+set('g6',LV,cs.map((c,i)=>({label:c,data:LV.map(l=>cnt(pf,p=>p.cls==c&&p.vs.includes(l))),backgroundColor:cc[i]})),1);
+set('g7',cs,[{data:cs.map(c=>sum(im.filter(r=>r.p.cls==c).map(r=>r.n))),backgroundColor:cc}]);
+set('g8',SPL,[{data:SPL.map(s=>sum(ib.filter(r=>r.p.split==s).map(r=>r.n))),backgroundColor:BL}]);
+set('g9',SPL,[{data:SPL.map(s=>cnt(pf,p=>p.split==s)),backgroundColor:M}]);
+set('g10',LV,cs.map((c,i)=>({label:c,data:LV.map(l=>sum(im.filter(r=>r.v==l&&r.p.cls==c).map(r=>r.n))),backgroundColor:cc[i]})),1);
+}
+function theme(){Chart.defaults.color=css('--muted');Chart.defaults.borderColor=css('--grid');Chart.defaults.font.family='Arial';render()}
+['fs','fc','fv','fp'].forEach(i=>$(i).addEventListener('change',render));
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',theme);theme();
+</script></body></html>

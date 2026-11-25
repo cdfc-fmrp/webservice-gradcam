@@ -11,7 +11,8 @@ from pipeline import (
     carregar_modelo,
     inicializar_modelo,
     analisar_imagem,
-    gerar_gradcam_visual
+    gerar_gradcam_visual,
+    gerar_gradiente_visual
 )
 
 print("2. Imports concluídos")
@@ -75,6 +76,9 @@ def historico():
 def modelo():
     return render_template("modelo.html")
 
+@app.route("/dashboard-base")
+def dashboard_base():
+    return render_template("dashboard_base.html")
 
 @app.route("/sobre")
 def sobre():
@@ -125,7 +129,7 @@ def analisar():
             )
 
             # Mesmo pipeline que já funcionava
-            resultado, cam, image_processada = analisar_imagem(
+            resultado, cam, saliencia, image_processada = analisar_imagem(
                 image,
                 model,
                 device,
@@ -154,13 +158,9 @@ def analisar():
             # Numeração das imagens dentro da análise
             numero_imagem = indice + 1
 
-            nome_imagem_original = (
-                f"{numero_imagem:02d}_original.png"
-            )
-
-            nome_imagem_gradcam = (
-                f"{numero_imagem:02d}_gradcam.png"
-            )
+            nome_imagem_original = f"{numero_imagem:02d}_original.png"
+            nome_imagem_gradiente = f"{numero_imagem:02d}_gradiente.png"
+            nome_imagem_gradcam = f"{numero_imagem:02d}_gradcam.png"
 
             caminho_imagem_original = os.path.join(
                 caminho_pasta,
@@ -172,6 +172,11 @@ def analisar():
                 nome_imagem_gradcam
             )
 
+            caminho_imagem_gradiente = os.path.join(
+                caminho_pasta,
+                nome_imagem_gradiente
+            )
+
             image.save(caminho_imagem_original)
 
             gerar_gradcam_visual(
@@ -179,6 +184,13 @@ def analisar():
                 cam,
                 resultado["classe"],
                 caminho_imagem_gradcam
+            )
+
+            gerar_gradiente_visual(
+                image_processada,
+                saliencia,
+                resultado["classe"],
+                caminho_imagem_gradiente
             )
 
             url_imagem_original = os.path.join(
@@ -193,6 +205,12 @@ def analisar():
                 nome_imagem_gradcam
             ).replace("\\", "/")
 
+            url_imagem_gradiente = os.path.join(
+                "resultados",
+                nome_pasta,
+                nome_imagem_gradiente
+            ).replace("\\", "/")
+
             resultados.append({
                 "nome_arquivo": nome_arquivo,
                 "paciente": paciente,
@@ -202,9 +220,9 @@ def analisar():
                 "acertou": acertou,
                 "resultado": resultado,
                 "imagem_original": url_imagem_original,
+                "imagem_gradiente": url_imagem_gradiente,
                 "imagem_gradcam": url_imagem_gradcam
             })
-
         return render_template(
             "resultado.html",
             resultados=resultados
