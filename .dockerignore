@@ -6,9 +6,17 @@ __pycache__/
 .gitignore
 
 *.ipynb
+.ipynb_checkpoints/
 
 imagem_teste.jpg
+ver_fundo.py
 
 static/imagem_original*
 static/gradcam_resultado*
 static/resultados/
+
+*.dcm
+*.nii
+*.nii.gz
+.env
+*.pem
